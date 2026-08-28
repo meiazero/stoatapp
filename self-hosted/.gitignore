@@ -1,0 +1,14 @@
+data*
+
+.env
+.env.web
+Revolt.toml
+livekit.yml
+Revolt.toml.old
+livekit.yml.old
+secrets.env
+secrets.env.old
+stoat.json
+
+compose.override.yml
+compose.override.yml.old

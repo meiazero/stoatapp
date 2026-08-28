@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stoat Complete Refactor — Council Report</title>
+  <style>
+    :root { color-scheme: light; --ink:#17202a; --muted:#5c6773; --line:#dce2e8; --paper:#fff; --soft:#f5f7fa; --accent:#3157a4; --green:#196b4b; --amber:#8a5a00; --red:#9a3440; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--soft); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:1080px; margin:0 auto; padding:40px 24px 72px; }
+    header,.card,details { background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:0 2px 8px #17202a0a; }
+    header { padding:32px; border-top:5px solid var(--accent); }
+    h1 { margin:0 0 8px; font-size:clamp(30px,4vw,46px); line-height:1.1; }
+    h2 { margin:38px 0 14px; font-size:24px; }
+    h3 { margin:0 0 8px; font-size:18px; }
+    p { margin:8px 0 0; }
+    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.08em; text-transform:uppercase; font-size:13px; }
+    .muted { color:var(--muted); }
+    .verdict { margin-top:22px; padding:20px; background:#eef3ff; border-left:4px solid var(--accent); border-radius:8px; font-size:18px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+    .card { padding:18px; }
+    .keep { border-top:4px solid var(--green); }
+    .prove { border-top:4px solid var(--amber); }
+    .defer { border-top:4px solid var(--red); }
+    .agreement { display:grid; grid-template-columns:180px repeat(5,1fr); gap:2px; overflow-x:auto; }
+    .agreement > div { min-width:72px; padding:10px 8px; background:white; border:1px solid var(--line); text-align:center; font-size:13px; }
+    .agreement .label { text-align:left; font-weight:650; min-width:180px; }
+    .yes { color:var(--green); font-weight:800; }
+    .mixed { color:var(--amber); font-weight:800; }
+    details { margin:12px 0; padding:0 18px; }
+    summary { cursor:pointer; padding:16px 0; font-weight:700; }
+    details > div { padding:0 0 18px; color:#2d3742; }
+    ol { padding-left:22px; }
+    li + li { margin-top:8px; }
+    code { background:#edf0f3; border-radius:4px; padding:2px 5px; }
+    footer { margin-top:38px; color:var(--muted); font-size:14px; }
+    a { color:var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">LLM Council · Architecture Decision</div>
+    <h1>Stoat Complete Refactor</h1>
+    <p class="muted">Five independent advisors, five anonymous peer reviews, primary-source verification, and chairman synthesis.</p>
+    <div class="verdict"><strong>Decision:</strong> preserve the working Solid/Electron/LiveKit product while moving canonical domain and sync invariants into deep Rust modules. Intend a simple single-node deployment, but require proof before replacing persistence or clients. Choose the native toolkit by one fixed accessibility/media/platform probe. Make capability-based WASM extensions the strategic expansion direction.</div>
+  </header>
+
+  <h2>Decision map</h2>
+  <section class="grid">
+    <article class="card keep"><h3>Keep in production</h3><p>Solid, <code>stoat.js</code>, Electron, LiveKit, accessible HTML text, current storage and broker paths during migration.</p></article>
+    <article class="card prove"><h3>Build and prove</h3><p>Pure Rust domain/sync core, modular monolith, SQLite/filesystem profile, local cache, native toolkit, outbox, GStreamer workers.</p></article>
+    <article class="card keep"><h3>Strategic expansion</h3><p>Capability-based WASM plugins, local search, captions, focused collaborative artifacts.</p></article>
+    <article class="card defer"><h3>Remain experimental</h3><p>Federation, MoQ broadcasting, generalized CRDT use, embeddings, and broad MLS/E2EE deployment.</p></article>
+  </section>
+
+  <h2>Agreement and disagreement</h2>
+  <div class="agreement" role="table" aria-label="Advisor alignment matrix">
+    <div class="label" role="rowheader">Position</div><div>Contrarian</div><div>First Principles</div><div>Expansionist</div><div>Outsider</div><div>Executor</div>
+    <div class="label">No big-bang rewrite</div><div class="yes">Yes</div><div class="yes">Yes</div><div class="mixed">Mostly</div><div class="yes">Yes</div><div class="yes">Yes</div>
+    <div class="label">Keep Solid/Electron baseline</div><div class="yes">Yes</div><div class="yes">Yes</div><div class="yes">Yes</div><div class="yes">Yes</div><div class="yes">Yes</div>
+    <div class="label">Pure Rust shared core</div><div class="mixed">Narrow</div><div class="yes">Yes</div><div class="yes">Broad</div><div class="yes">Incremental</div><div class="yes">Narrow</div>
+    <div class="label">SQLite as settled end state</div><div class="mixed">No</div><div class="mixed">After proof</div><div class="yes">Yes</div><div class="mixed">After proof</div><div class="mixed">After proof</div>
+    <div class="label">WASM plugins</div><div class="mixed">Later</div><div class="yes">Strategic</div><div class="yes">Primary bet</div><div class="mixed">After offline</div><div class="mixed">Bounded</div>
+  </div>
+
+  <h2>Chairman verdict</h2>
+  <section class="grid">
+    <article class="card"><h3>Product boundary</h3><p>User-controlled, extensible communication—not a simultaneous Discord, Matrix, Slack, Twitch, and Notion replacement.</p></article>
+    <article class="card"><h3>Permanent seam</h3><p>A canonical domain model and versioned event/sync envelope. It owns ordering, replay, idempotency, gaps, tombstones, revocation, compatibility, and migration.</p></article>
+    <article class="card"><h3>Deployment</h3><p>Rust modular monolith for API/event plane; isolated media and hazardous workers. Intended single-node SQLite/filesystem profile plus proven scale adapters.</p></article>
+    <article class="card"><h3>Security</h3><p>Per-device identity, recovery, revocation, retention, deletion, plugin capabilities, and explicit server-readable/trusted-agent/zero-knowledge modes.</p></article>
+  </section>
+
+  <h2>The first runnable gate</h2>
+  <div class="card">
+    <p><strong>Write the canonical domain model and versioned event envelope, then run a deterministic offline/reconnect simulation against the existing product.</strong></p>
+    <ol>
+      <li>Duplicate, reordered, and missing delivery.</li>
+      <li>Tombstones, long-offline clients, and stale writes.</li>
+      <li>Permission revocation and device loss.</li>
+      <li>Snapshot recovery and eventual convergence.</li>
+    </ol>
+    <p>If this contract is not deterministic, no database, native toolkit, plugin system, E2EE design, or frontier protocol is ready to anchor the refactor.</p>
+  </div>
+
+  <h2>Advisor briefs</h2>
+  <details><summary>The Contrarian</summary><div>Preserve the working stack and reject unsupported certainty. Database interfaces do not prove migration semantics. Keep MongoDB and S3-compatible storage until reversible load, recovery, RPO, and RTO gates pass. Treat frontier technologies as product programs.</div></details>
+  <details><summary>The First Principles Thinker</summary><div>Reframe Stoat as local-first, self-hostable communication. Build deep Rust modules for rules and sync, retain platform-specific UI state, use a modular monolith, and make accessibility a toolkit-selection constraint.</div></details>
+  <details><summary>The Expansionist</summary><div>Pursue a Rust-core architecture, specialized clients, GStreamer media workflows, and a capability-based WASM ecosystem. Use collaborative documents and selective E2EE to expand beyond Discord.</div></details>
+  <details><summary>The Outsider</summary><div>Narrow the product boundary. Validate real low-bandwidth, constrained-device, and screen-reader workflows before architecture choices. Sequence reliability and offline behavior before frontier capabilities.</div></details>
+  <details><summary>The Executor</summary><div>Migrate by preserved contracts and objective gates. Fix measured defects first, introduce pure invariants, prove data replacements, select the native toolkit through one artifact, and delete legacy paths only after two stable releases and rehearsed rollback.</div></details>
+
+  <h2>Peer review highlights</h2>
+  <details><summary>Why the Executor won 4 of 5 reviews</summary><div>It supplied the strongest reversible sequence, explicit sync semantics, recovery/load gates, and rollback discipline. Its weakness was leaving too many end-state decisions open.</div></details>
+  <details><summary>Why First Principles won 1 review</summary><div>It connected a coherent product identity to deep seams and adapter-based architecture without forcing a premature rewrite.</div></details>
+  <details><summary>Blind spots found by reviewers</summary><div>Canonical domain ownership, quantitative convergence criteria, identity recovery, threat models, abuse/moderation, privacy/retention, SLOs, observability, incident response, support budgets, upgrade compatibility, and deletion ownership.</div></details>
+
+  <footer>
+    Generated 2026-08-27 23:16 America/Sao_Paulo. Full artifacts: <a href="09-complete-refactor-decision.md">architecture decision</a>, <a href="08-refactor-technology-research.md">primary-source research</a>, and <a href="council-transcript-20260827-2316.md">council transcript</a>.
+  </footer>
+</main>
+</body>
+</html>

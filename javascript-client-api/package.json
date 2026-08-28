@@ -1,0 +1,34 @@
+{
+  "name": "stoat-api",
+  "version": "0.15.3",
+  "description": "Stoat API Library",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "types": "lib/index.d.ts",
+  "homepage": "https://developers.stoat.chat",
+  "repository": "https://github.com/stoatchat/javascript-client-api",
+  "author": "Paul Makles <insrt.uk>",
+  "license": "MIT",
+  "scripts": {
+    "build": "REWRITE_ANYOF=1 node cli.js && tsc",
+    "prepublish": "in-publish && pnpm build || echo Skipping build."
+  },
+  "devDependencies": {
+    "in-publish": "^2.0.1",
+    "openapi-typescript": "^5.4.2",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "src",
+    "lib",
+    "OpenAPI.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "packageManager": "pnpm@11.1.2+sha512.415a1cc25974731e75455c1468371be74c5aa5fb7621b50d4056d222451609f11412f23fd602e6169f1e060466641f798597e1be961a10688836a67b16569499",
+  "dependencies": {
+    "json-with-bigint": "^3.4.4"
+  }
+}

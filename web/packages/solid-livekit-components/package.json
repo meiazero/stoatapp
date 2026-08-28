@@ -1,0 +1,89 @@
+{
+  "name": "solid-livekit-components",
+  "version": "2.9.15-3",
+  "description": "Solid components for building applications with LiveKit",
+  "license": "MIT",
+  "author": "insertish",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/insertish/solid-livekit-components.git"
+  },
+  "homepage": "https://github.com/insertish/solid-livekit-components#readme",
+  "bugs": {
+    "url": "https://github.com/insertish/solid-livekit-components/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "private": false,
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "browser": {},
+  "exports": {
+    "solid": {
+      "development": "./dist/dev.jsx",
+      "import": "./dist/index.jsx"
+    },
+    "development": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/dev.js"
+      }
+    },
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "typesVersions": {},
+  "scripts": {
+    "dev": "vite serve dev",
+    "build": "tsup",
+    "prepublishOnly": "pnpm build",
+    "format": "prettier --ignore-path .gitignore -w \"src/**/*.{js,ts,json,css,tsx,jsx}\" \"dev/**/*.{js,ts,json,css,tsx,jsx}\"",
+    "lint": "pnpm run lint:code && pnpm run lint:types",
+    "lint:code": "eslint --ignore-path .gitignore src/**/*.{js,ts,tsx,jsx}",
+    "lint:types": "tsc --noEmit",
+    "update-deps": "pnpm up -Li",
+    "test": "echo 'No tests specificed'"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
+    "esbuild": "^0.18.15",
+    "esbuild-plugin-solid": "^0.5.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "prettier": "3.0.0",
+    "solid-js": "^1.7.8",
+    "tsup": "^7.1.0",
+    "tsup-preset-solid": "^2.0.1",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.6",
+    "vite-plugin-solid": "^2.7.0"
+  },
+  "keywords": [
+    "solid"
+  ],
+  "packageManager": "pnpm@11.15.1+sha512.81350b07e53c9538a02f1f2303b4290fa2d7be04e56e2a970c4cc4b417dc761de196edabd49d55c7dc9580db81007c44143e4e3d7e462b3000d23c255122d065",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8.6.0"
+  },
+  "dependencies": {
+    "@livekit/components-core": "^0.12.14",
+    "@solid-primitives/intersection-observer": "^2.2.2",
+    "@solid-primitives/keyed": "^1.5.2",
+    "@solid-primitives/scheduled": "^1.5.2",
+    "livekit-client": "^2.20.2",
+    "rxjs": "^7.8.2"
+  }
+}

@@ -1,7 +1,4 @@
-min_version = { soft = "2026.5.15", hard = "2026.5.12" }
+# node, gh and git-town are inherited from the repo root (../mise.toml).
 
 [tools]
-node = "26.2.0"
-pnpm = "11.17.0"
-gh = "2.93.0"
-"github:git-town/git-town" = "23.0.1"
+pnpm = "11.17.0" # matches the `packageManager` field and pnpm-lock.yaml

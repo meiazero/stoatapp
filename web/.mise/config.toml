@@ -1,16 +1,11 @@
-min_version = { soft = "2026.5.15", hard = "2026.5.12" }
+# node, gh and git-town are inherited from the repo root (../mise.toml).
 
 [tools]
 deno = "2.8.1"
-node = "26.2.0"
-pnpm = "11.3.0"
-
-gh = "2.93.0"
+pnpm = "11.3.0" # matches the `packageManager` field and pnpm-lock.yaml
 
 mdbook = "0.5.3"
 "github:lzanini/mdbook-katex" = "0.10.0-alpha-binaries"
-
-"github:git-town/git-town" = "23.0.1"
 
 [tasks.check]
 description = "Task group for CI checks"

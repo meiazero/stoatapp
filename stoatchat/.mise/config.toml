@@ -1,13 +1,11 @@
-[tools]
-node = "25.4.0"
-pnpm = "10.28.1"
+# node, gh and git-town are inherited from the repo root (../mise.toml).
+# node is only needed by the docs site, which requires >=20.
 
-gh = "2.25.0"
+[tools]
+pnpm = "10.28.1" # docs site; its `packageManager` field says 10.22.0
 
 rust = "1.92.0"
 "cargo:cargo-nextest" = "0.9.122"
-
-"github:git-town/git-town" = "22.7.1"
 
 [settings]
 experimental = true
@@ -18,6 +16,16 @@ description = "Run all services"
 depends = ["docker:start", "build"]
 wait_for = ["docker:start", "build"]
 run = [{ task = "service:*" }]
+
+# Named to match the other projects so the root `mise lint` / `mise install`
+# aggregates reach this workspace too.
+[tasks.lint]
+description = "Lint code and find issues"
+depends = ["check"]
+
+[tasks."install:frozen"]
+description = "Fetch dependencies (don't update lockfile)"
+run = "cargo fetch --locked"
 
 [env]
 BUILDER = "cargo"

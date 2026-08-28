@@ -1,0 +1,14 @@
+# See https://www.git-town.com/configuration-file for details
+#
+# `main` stays the main branch. `develop` is the long-lived integration branch
+# for the monorepo rewrite, so it is perennial: branches stacked on it get the
+# right parent, and nothing tries to ship it into main.
+
+[branches]
+main = "main"
+perennials = ["develop"]
+
+[hosting]
+dev-remote = "origin"
+forge-type = "github"
+github-connector = "gh"

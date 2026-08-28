@@ -1,2 +1,16 @@
 .claude/scheduled_tasks.lock
 .DS_Store
+
+# Each subproject ignores its own build output and dependencies. These are a
+# safety net for anything created at the monorepo root by mistake.
+/node_modules/
+/target/
+/.env
+/.env.*
+
+# stoatchat's config crate walks UP the directory tree from the process cwd
+# looking for these files (stoatchat/crates/core/config/src/lib.rs). A stray copy
+# at the monorepo root would silently override every service's configuration.
+/Revolt.toml
+/Revolt.overrides.toml
+/Revolt.test-overrides.toml

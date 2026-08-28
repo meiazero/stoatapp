@@ -1,0 +1,16 @@
+# node, gh and git-town are inherited from the repo root.
+
+[tools]
+pnpm = "11.1.2" # matches the `packageManager` field and pnpm-lock.yaml
+
+[tasks."install:frozen"]
+description = "Install dependencies (don't update lockfile)"
+run = "pnpm install --frozen-lockfile"
+
+[tasks."install:deps"]
+description = "Install all dependencies"
+run = "pnpm install"
+
+[tasks.build]
+description = "Regenerate src/ from OpenAPI.json and compile to lib/"
+run = "pnpm build"

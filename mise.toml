@@ -1,0 +1,84 @@
+# Root configuration for the stoatapp monorepo.
+#
+# Each subproject keeps its own .mise/config.toml and its own tasks. This file
+# only adds the layer above them: shared tool pins and aggregate tasks that fan
+# out across projects.
+#
+# Run a single project's task from anywhere:   mise run //web:build
+# Run one task across every project:           mise run "//...:build"
+# Working inside a subproject still works:     cd web && mise dev
+
+min_version = "2026.8.0"
+
+monorepo_root = true
+
+[settings]
+experimental = true # required for monorepo tasks
+
+[monorepo]
+config_roots = [
+    "web",
+    "for-desktop",
+    "stoatchat",
+    "javascript-client-api",
+]
+
+# Shared floor. A subproject overrides only what it genuinely needs.
+#
+# pnpm is deliberately NOT pinned here: each project is tied to its own
+# `packageManager` field and lockfile (web 11.3.0, for-desktop 11.17.0,
+# stoatchat/docs 10.28.1). Unifying them means regenerating three lockfiles and
+# is tracked as its own step in docs/10-monorepo-plan.md, phase 5.
+[tools]
+node = "26.2.0"
+gh = "2.93.0"
+"github:git-town/git-town" = "23.0.1"
+
+# --- Aggregates -------------------------------------------------------------
+# A wildcard silently skips projects that do not define the task, so the
+# coverage of each aggregate is spelled out in its description.
+
+[tasks.install]
+description = "Install dependencies everywhere (web, for-desktop, javascript-client-api, stoatchat)"
+depends = ["//...:install:frozen"]
+
+[tasks.build]
+description = "Build every project (web, for-desktop, javascript-client-api, stoatchat)"
+# //web:build only declares `wait_for` on its own build:deps, so on a clean
+# checkout it has to be scheduled explicitly or stoat.js and
+# solid-livekit-components are never compiled.
+depends = ["//web:build:deps", "//...:build"]
+
+[tasks.lint]
+description = "Lint every project (web, for-desktop, stoatchat)"
+depends = ["//...:lint"]
+
+[tasks.format]
+description = "Check formatting (web, for-desktop)"
+depends = ["//...:format"]
+
+[tasks.format-fix]
+description = "Fix formatting (web, for-desktop)"
+depends = ["//...:format:fix"]
+
+[tasks.test]
+description = "Run tests (stoatchat unit, web end-to-end)"
+depends = ["//stoatchat:test", "//web:test:e2e"]
+
+# --- Development ------------------------------------------------------------
+
+[tasks."dev:backend"]
+description = "Start infra containers and all Rust services"
+depends = ["//stoatchat:start"]
+
+[tasks."dev:web"]
+description = "Start the web client against whatever web/packages/client/.env points at"
+depends = ["//web:dev"]
+
+[tasks.dev]
+description = "Start the full local stack: infra, Rust services, web client"
+run = [{ tasks = ["//stoatchat:start", "//web:dev"] }]
+
+[tasks.down]
+description = "Stop the infra containers"
+depends = ["//stoatchat:docker:stop"]
